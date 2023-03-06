@@ -1,0 +1,20 @@
+{
+  "name": "advanced-node",
+  "version": "1.0.0",
+  "description": "API desenvolvida ao longo do treinamento de NodeJS avançado, oferecido pelo professor Rodrigo Manguinho",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DerivedPuma7/advanced-node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DerivedPuma7/advanced-node/issues"
+  },
+  "homepage": "https://github.com/DerivedPuma7/advanced-node#readme"
+}
