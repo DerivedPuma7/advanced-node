@@ -4,6 +4,7 @@
    "description": "API desenvolvida ao longo do treinamento de NodeJS avançado, oferecido pelo professor Rodrigo Manguinho",
    "main": "index.js",
    "scripts": {
+      "start": "node dist/main/api",
       "build": "rimraf dist && tsc"
    },
    "repository": {
@@ -18,12 +19,15 @@
    },
    "homepage": "https://github.com/DerivedPuma7/advanced-node#readme",
    "devDependencies": {
+      "@types/module-alias": "^2.0.1",
+      "@types/node": "^18.14.6",
       "typescript": "^4.9.5"
    },
    "engines": {
       "node": "16.x"
    },
    "dependencies": {
+      "module-alias": "^2.2.2",
       "rimraf": "^4.3.1"
    }
 }
