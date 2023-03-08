@@ -2,7 +2,7 @@ import { LoadFacebookUserApi } from "@/data/contracts/apis";
 import { AuthenticationError } from "@/domain/errors";
 import { FacebookAuthentication } from "@/domain/features";
 
-export class FacebookAuthenticationService {
+export class FacebookAuthenticationService implements FacebookAuthentication {
    constructor(
       private readonly loadFacebookUserApi: LoadFacebookUserApi
    ){
