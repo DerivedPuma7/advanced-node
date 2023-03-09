@@ -13,7 +13,7 @@ export class FacebookAuthenticationService implements FacebookAuthentication {
    ){
 
    }
-   async perform(params: FacebookAuthentication.Params): Promise<AuthenticationError> {
+   async perform(params: FacebookAuthentication.Params): Promise<FacebookAuthentication.Result> {
       const fbReturnData = await this.facebookApi.loadUser(params);
 
       if(fbReturnData !== undefined) {
@@ -21,7 +21,9 @@ export class FacebookAuthenticationService implements FacebookAuthentication {
          const facebookAccount = new FacebookAccount(fbReturnData, accountData);
 
          const { id } = await this.userAccountRepo.saveWithFacebook(facebookAccount);
-         await this.crypto.generateToken({ key: id, expirationInMs: AccessToken.expirationInMs });
+         const token = await this.crypto.generateToken({ key: id, expirationInMs: AccessToken.expirationInMs });
+
+         return new AccessToken(token);
       }
       return new AuthenticationError();
    }
