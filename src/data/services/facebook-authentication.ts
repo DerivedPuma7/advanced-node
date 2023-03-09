@@ -16,10 +16,10 @@ export class FacebookAuthenticationService implements FacebookAuthentication {
       if(fbReturnData !== undefined) {
          const accountData = await this.userAccountRepo.load({ email: fbReturnData.email });
 
-         if(accountData?.name !== undefined) {
+         if(accountData !== undefined) {
             await this.userAccountRepo.updateWithFacebook({
                id: accountData.id,
-               name: accountData.name,
+               name: accountData.name ?? fbReturnData.name,
                facebookId: fbReturnData.facebookId
             });
          }
