@@ -3,11 +3,13 @@ import { AuthenticationError } from "@/domain/errors";
 import { FacebookAuthentication } from "@/domain/features";
 import { LoadUserAccountRepository, SaveFacebookAccountRepository } from "@/data/contracts/repos";
 import { FacebookAccount } from "@/domain/models";
+import { TokenGenerator } from "../contracts/crypto";
 
 export class FacebookAuthenticationService implements FacebookAuthentication {
    constructor(
       private readonly facebookApi: LoadFacebookUserApi,
-      private readonly userAccountRepo: LoadUserAccountRepository & SaveFacebookAccountRepository
+      private readonly userAccountRepo: LoadUserAccountRepository & SaveFacebookAccountRepository,
+      private readonly crypto: TokenGenerator
    ){
 
    }
@@ -18,8 +20,8 @@ export class FacebookAuthenticationService implements FacebookAuthentication {
          const accountData = await this.userAccountRepo.load({ email: fbReturnData.email });
          const facebookAccount = new FacebookAccount(fbReturnData, accountData);
 
-         await this.userAccountRepo.saveWithFacebook(facebookAccount);
-
+         const { id } = await this.userAccountRepo.saveWithFacebook(facebookAccount);
+         await this.crypto.generateToken({ key: id });
       }
       return new AuthenticationError();
    }
