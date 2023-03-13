@@ -15,27 +15,30 @@ describe('FacebookAuthenticationService', () => {
    let crypto: MockProxy<TokenGenerator>;
    let sut: FacebookAuthenticationService;
 
-   const token = 'any_token';
+   let token: string;
 
-   beforeEach(() => {
+   beforeAll(() => {
+      token = 'any_token';
+
       facebookApi = mock();
-      userAccountRepo = mock();
-      crypto = mock();
-      sut = new FacebookAuthenticationService(facebookApi, userAccountRepo, crypto);
-
       facebookApi.loadUser.mockResolvedValue({
          name: 'any_facebook_name',
          email: 'any_facebook_email',
          facebookId: 'any_facebook_id',
       });
 
+      userAccountRepo = mock();
       userAccountRepo.load.mockResolvedValue(undefined);
-
       userAccountRepo.saveWithFacebook.mockResolvedValue({
          id: 'any_account_id'
       });
 
+      crypto = mock();
       crypto.generateToken.mockResolvedValue('any_generated_token');
+   });
+
+   beforeEach(() => {
+      sut = new FacebookAuthenticationService(facebookApi, userAccountRepo, crypto);
    });
 
    it('should call LoadFacebookUserApi with correct params', async () => {
