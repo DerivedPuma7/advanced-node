@@ -19,7 +19,7 @@ describe('JwtTokenGenerator', () => {
 
    beforeAll(() => {
       fakeJwt = jwt as jest.Mocked<typeof jwt>;
-      fakeJwt.sign.mockImplementation(() => 'any_token');
+      fakeJwt.sign.mockImplementation(() => { return 'any_token' });
    });
 
    beforeEach(() => {
@@ -36,5 +36,13 @@ describe('JwtTokenGenerator', () => {
       const token = await sut.generateToken({ key: 'any_key', expirationInMs: 1000 });
 
       expect(token).toBe('any_token');
+   });
+
+   it('should rethrow if sign throws', async () => {
+      fakeJwt.sign.mockImplementationOnce(() => { throw new Error('token_error'); });
+
+      const promise = sut.generateToken({ key: 'any_key', expirationInMs: 1000 });
+
+      expect(promise).rejects.toThrow(new Error('token_error'));
    });
 });
