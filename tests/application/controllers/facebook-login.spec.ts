@@ -2,7 +2,7 @@ import { AuthenticationError } from "@/domain/errors";
 import { FacebookAuthentication } from "@/domain/features";
 import { AccessToken } from "@/domain/models";
 import { FacebookLoginController } from "@/application/controllers";
-import { ServerError } from "@/application/errors";
+import { RequiredFieldError, ServerError } from "@/application/errors";
 
 import { mock, MockProxy } from "jest-mock-extended";
 
@@ -25,25 +25,25 @@ describe('FacebookLoginController', () => {
 
       expect(httpResponse).toEqual({
          statusCode: 400,
-         data: new Error('The field token is required')
+         data: new RequiredFieldError('token')
       });
    });
 
-   it('should return 400 if token is empty', async () => {
+   it('should return 400 if token is null', async () => {
       const httpResponse = await sut.handle({ token: null });
 
       expect(httpResponse).toEqual({
          statusCode: 400,
-         data: new Error('The field token is required')
+         data: new RequiredFieldError('token')
       });
    });
 
-   it('should return 400 if token is empty', async () => {
+   it('should return 400 if token is undefined', async () => {
       const httpResponse = await sut.handle({ token: undefined });
 
       expect(httpResponse).toEqual({
          statusCode: 400,
-         data: new Error('The field token is required')
+         data: new RequiredFieldError('token')
       });
    });
 
