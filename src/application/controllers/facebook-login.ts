@@ -33,8 +33,9 @@ export class FacebookLoginController {
    }
 
    private validate(httpRequest: HttpRequest): Error | undefined {
-      const requiredStringValidator = new RequiredStringValidator(httpRequest.token, 'token');
-      const validator = new ValidationComposite([requiredStringValidator]);
+      const validator = new ValidationComposite([
+         new RequiredStringValidator(httpRequest.token, 'token')
+      ]);
       return validator.validate();
    }
 }
