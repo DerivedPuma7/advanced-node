@@ -1,7 +1,9 @@
+import { makeFacebookLoginController } from "@/main/factories/controllers";
+import { adaptExpressRoute } from "@/infra/http";
+
 import { Router } from "express";
 
 export default (router: Router): void  => {
-   router.post('/api/login/facebook', (req, res) => {
-      res.send({ data: 'any data' });
-   });
+   const controller = makeFacebookLoginController();
+   router.post('/api/login/facebook', adaptExpressRoute(controller));
 }
