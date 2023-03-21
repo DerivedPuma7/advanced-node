@@ -1,5 +1,5 @@
+import { adaptExpressRoute } from "@/main/adapters";
 import { Controller } from "@/application/controllers";
-import { adaptExpressRoute } from "@/infra/http";
 
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { getMockReq, getMockRes } from "@jest-mock/express";
