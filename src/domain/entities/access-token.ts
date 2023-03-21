@@ -1,6 +1,4 @@
-export class AccessToken {
-   static expirationInMin: number = 30;
-   static expirationInMs: number = this.expirationInMin * 60 * 1000;
-
-   constructor(readonly value: string) {}
+export const AccessToken = {
+   expirationInMin: 30,
+   expirationInMs: 30 * 60 * 1000
 }
