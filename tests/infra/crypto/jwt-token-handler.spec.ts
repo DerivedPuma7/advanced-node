@@ -52,4 +52,18 @@ describe('JwtTokenHandler', () => {
       });
    });
 
+   describe('ValidateToken', () => {
+      let token: string;
+
+      beforeAll(() => {
+         token = 'any_token';
+      });
+
+      it('should call verify with correct params', async () => {
+         await sut.validateToken({ token });
+
+         expect(fakeJwt.verify).toHaveBeenCalledWith(token, secret);
+         expect(fakeJwt.verify).toHaveBeenCalledTimes(1);
+      });
+   });
 });
