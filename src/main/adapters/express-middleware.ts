@@ -15,7 +15,7 @@ export const adaptExpressMiddleware: Adapter = middleware => {
          next();
       }
       else {
-         res.status(statusCode).json(data);
+         res.status(statusCode).json({ error: data.message });
       }
    }
 }
