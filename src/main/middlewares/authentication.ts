@@ -1,4 +1,4 @@
-import { adaptExpressMiddleware } from "../adapters";
-import { makeAuthenticationMiddleware } from "../factories/middlewares";
+import { adaptExpressMiddleware } from "@/main/adapters";
+import { makeAuthenticationMiddleware } from "@/main/factories/middlewares";
 
 export const auth = adaptExpressMiddleware(makeAuthenticationMiddleware());
