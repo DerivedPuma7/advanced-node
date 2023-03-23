@@ -5,7 +5,7 @@ import { RequestHandler } from "express";
 import { mock } from "jest-mock-extended";
 
 type Adapter = (middleware: Middleware) => RequestHandler;
-const adaptExpressMiddleware: Adapter = (middleware) => {
+const adaptExpressMiddleware: Adapter = middleware => {
    return async (req, res, next) => {
       await middleware.handle({ ...req.headers });
    }
