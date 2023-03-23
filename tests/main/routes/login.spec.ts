@@ -40,7 +40,7 @@ describe('Login Routes', () => {
          expect(body.accessToken).toBeDefined();
       });
 
-      it('should return 401 with anauthorized error', async () => {
+      it('should return 401 with unauthorized error', async () => {
          const { status, body } = await request(app)
             .post('/api/login/facebook')
             .send({ token: 'valid_token' });
