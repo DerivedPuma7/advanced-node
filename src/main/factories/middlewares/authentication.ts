@@ -1,9 +1,9 @@
 import { AuthenticationMiddleware } from "@/application/middlewares";
-import { makeJwtTokenHandler } from "../crypto";
+import { makeJwtTokenHandler } from "@/main/factories/gateways";
 
 export const makeAuthenticationMiddleware = (): AuthenticationMiddleware => {
    const jwt = makeJwtTokenHandler();
-   return new AuthenticationMiddleware(jwt.validateToken.bind(jwt));
+   return new AuthenticationMiddleware(jwt.validate.bind(jwt));
    /**
     * bind faz com que a referência para o objeto jwt não seja perdida.
     * dessa forma, o ponteiro this não é undefined, e conseguimos acessar os atributos da classe
