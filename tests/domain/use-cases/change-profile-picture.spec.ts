@@ -1,8 +1,11 @@
 import { UploadFile, UUIDGenerator } from "@/domain/contracts/gateways";
 import { ChangeProfilePicture, setupChangeProfilePicture } from "@/domain/use-cases"
 import { SaveUserPicture, LoadUserProfile } from "@/domain/contracts/repos";
+import { UserProfile } from "@/domain/entities";
 
 import { mock, MockProxy } from "jest-mock-extended";
+
+jest.mock('@/domain/entities/user-profile');
 
 describe('ChangeProfilePicture', () => {
    let uuid: string;
@@ -43,48 +46,31 @@ describe('ChangeProfilePicture', () => {
    it('should call SavePicture with correct input', async () => {
       await sut({ userId: 'any_id', file });
 
-      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: 'any_url', initials: undefined });
+      expect(userProfileRepo.savePicture).toHaveBeenCalledWith(jest.mocked(UserProfile).mock.instances[0]);
       expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
    });
 
-   it('should call SavePicture with correct input when file is undefined', async () => {
-      await sut({ userId: 'any_id', file: undefined });
+   /**
+    * 27/03/2023
+    * Teste exatamente igual ao acima, está comentado por que estou aguardando resposta do instrutor do curso
+    */
+   // it('should call SavePicture with correct input - teste', async () => {
+   //    const UserProfileStub = jest.fn().mockImplementationOnce(() => {
+   //       return {
+   //          pictureUrl: 'any_url',
+   //          setPicture: jest.fn().mockImplementationOnce(() => {
+   //             return jest.fn()
+   //          })
+   //       }
+   //    });
+   //    jest.mocked(UserProfile).mockImplementation(UserProfileStub);
 
-      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined, initials: 'GF' });
-      expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
-   });
+   //    await sut({ userId: 'any_id', file });
 
-   it('should call SavePicture with correct initials if letters are lowercased', async () => {
-      userProfileRepo.load.mockResolvedValueOnce({ name: 'gustavo ribeiro de figueiredo' });
-      await sut({ userId: 'any_id', file: undefined });
+   //    expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: 'any_url', initials: undefined });
+   //    expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
+   // });
 
-      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined, initials: 'GF' });
-      expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
-   });
-
-   it('should call SavePicture with correct initials if user does not have full name', async () => {
-      userProfileRepo.load.mockResolvedValueOnce({ name: 'gustavo' });
-      await sut({ userId: 'any_id', file: undefined });
-
-      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined, initials: 'GU' });
-      expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
-   });
-
-   it('should call SavePicture with correct initials if user has name with only one letter', async () => {
-      userProfileRepo.load.mockResolvedValueOnce({ name: 'g' });
-      await sut({ userId: 'any_id', file: undefined });
-
-      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined, initials: 'G' });
-      expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
-   });
-
-   it('should call SavePicture with correct initials if user does not have a name', async () => {
-      userProfileRepo.load.mockResolvedValueOnce({ name: undefined });
-      await sut({ userId: 'any_id', file: undefined });
-
-      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined, initials: undefined });
-      expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
-   });
 
    it('should call LoadUserProfile with correct input', async () => {
       await sut({ userId: 'any_id', file: undefined });
