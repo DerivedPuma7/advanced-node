@@ -19,6 +19,7 @@ describe('ChangeProfilePicture', () => {
       fileStorage.upload.mockResolvedValue('any_url');
       crypto = mock();
       userProfileRepo = mock();
+      userProfileRepo.load.mockResolvedValue({ name: 'Gustavo Ribeiro de Figueiredo' });
       crypto.uuid.mockReturnValue(uuid);
    });
 
@@ -49,7 +50,39 @@ describe('ChangeProfilePicture', () => {
    it('should call SavePicture with correct input when file is undefined', async () => {
       await sut({ userId: 'any_id', file: undefined });
 
-      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined });
+      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined, initials: 'GF' });
+      expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
+   });
+
+   it('should call SavePicture with correct initials if letters are lowercased', async () => {
+      userProfileRepo.load.mockResolvedValueOnce({ name: 'gustavo ribeiro de figueiredo' });
+      await sut({ userId: 'any_id', file: undefined });
+
+      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined, initials: 'GF' });
+      expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
+   });
+
+   it('should call SavePicture with correct initials if user does not have full name', async () => {
+      userProfileRepo.load.mockResolvedValueOnce({ name: 'gustavo' });
+      await sut({ userId: 'any_id', file: undefined });
+
+      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined, initials: 'GU' });
+      expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
+   });
+
+   it('should call SavePicture with correct initials if user has name with only one letter', async () => {
+      userProfileRepo.load.mockResolvedValueOnce({ name: 'g' });
+      await sut({ userId: 'any_id', file: undefined });
+
+      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined, initials: 'G' });
+      expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
+   });
+
+   it('should call SavePicture with correct initials if user does not have a name', async () => {
+      userProfileRepo.load.mockResolvedValueOnce({ name: undefined });
+      await sut({ userId: 'any_id', file: undefined });
+
+      expect(userProfileRepo.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined, initials: undefined });
       expect(userProfileRepo.savePicture).toHaveBeenCalledTimes(1);
    });
 
