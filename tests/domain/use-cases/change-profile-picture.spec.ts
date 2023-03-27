@@ -84,4 +84,24 @@ describe('ChangeProfilePicture', () => {
 
       expect(userProfileRepo.load).not.toHaveBeenCalled();
    });
+
+   /**
+    * esse expect é um caso inválido, nunca teremos a pictureUrl e initials preenchidos
+    * a ideia é garantir que o retorno do sut seja identico à entidade UserProfile
+    */
+   it('should return correct data on success', async () => {
+      jest.mocked(UserProfile).mockImplementationOnce(id => ({
+         setPicture: jest.fn(),
+         id: 'any_id',
+         pictureUrl: 'any_url',
+         initials: 'any_initials'
+      }));
+
+      const result = await sut({ userId: 'any_id', file });
+
+      expect(result).toMatchObject({
+         pictureUrl: 'any_url',
+         initials: 'any_initials'
+      });
+   });
 });
