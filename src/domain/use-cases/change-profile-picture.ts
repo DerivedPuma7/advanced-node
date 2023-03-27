@@ -10,18 +10,17 @@ type Output = {pictureUrl?: string, initials?: string};
 export const setupChangeProfilePicture: Setup = (fileStorage, crypto, userProfileRepo): ChangeProfilePicture => {
    return async ({ userId, file }) => {
       const key = crypto.uuid({ key: userId });
-      const data: {pictureUrl?: string, name?: string} = {};
-      if(file) {
-         data.pictureUrl = await fileStorage.upload({ file, key });
-      } else {
-         data.name = (await userProfileRepo.load({ id: userId })).name;
-      }
+      const data = {
+         pictureUrl: file !== undefined ? await fileStorage.upload({ file, key }) : undefined,
+         name: file === undefined ? (await userProfileRepo.load({ id: userId })).name : undefined
+      };
       const userProfile = new UserProfile(userId);
       userProfile.setPicture(data);
       try{
          await userProfileRepo.savePicture(userProfile);
       } catch {
-         await fileStorage.delete({ key });
+         if(file !== undefined) await fileStorage.delete({ key });
+         throw new Error();
       }
       return userProfile;
    }
