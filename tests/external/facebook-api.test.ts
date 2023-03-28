@@ -1,5 +1,4 @@
-import { FacebookApi } from "@/infra/apis";
-import { AxiosHttpClient } from "@/infra/http";
+import { FacebookApi, AxiosHttpClient } from "@/infra/gateways";
 import { env } from "@/main/config/env";
 
 describe('', () => {
@@ -14,7 +13,7 @@ describe('', () => {
          env.facebookApi.clientSecret
       );
    });
-   
+
    it('should return a facebook user if token is valid', async () => {
       const axiosClient = new AxiosHttpClient();
       const sut = new FacebookApi(
