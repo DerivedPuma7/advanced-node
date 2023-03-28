@@ -4,3 +4,4 @@ export * from './unique-id';
 export * from './jwt-token-handler';
 export * from './client';
 export * from './axios-client';
+export * from './aws-s3-file-storage';
