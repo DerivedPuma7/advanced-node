@@ -4,10 +4,12 @@ import { HttpResponse, noContent } from "@/application/helpers";
 
 type HttpRequest = { userId: string };
 
-class DeletePictureController {
-   constructor(private readonly changeProfilePicture: ChangeProfilePicture) {}
+class DeletePictureController extends Controller {
+   constructor(private readonly changeProfilePicture: ChangeProfilePicture) {
+      super()
+   }
 
-   async handle({ userId }: HttpRequest): Promise<HttpResponse> {
+   async perform({ userId }: HttpRequest): Promise<HttpResponse> {
       await this.changeProfilePicture({ userId });
       return noContent();
    }
@@ -23,6 +25,10 @@ describe('DeletePictureController', () => {
 
    beforeEach(() => {
       sut = new DeletePictureController(changeProfilePicture);
+   });
+
+   it('should extend Controller', async () => {
+      expect(sut).toBeInstanceOf(Controller);
    });
 
    it('should call ChangeProfilePicture with correct input', async () => {
