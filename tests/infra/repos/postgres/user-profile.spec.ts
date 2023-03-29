@@ -41,4 +41,14 @@ describe('PgUserProfileRepository', () => {
       });
    });
 
+   describe('loadUser', () => {
+      it('should load user profile', async () => {
+         const { id } = await pgUserRepo.save({ email: 'any_email', name: 'any_name' });
+
+         const user = await sut.load({ id: id.toString() });
+         const name = user?.name;
+
+         expect(name).toBe('any_name');
+      });
+   });
 });
