@@ -115,4 +115,14 @@ describe('SavePictureController', () => {
          data: new MaxFileSizeError(5)
       });
    });
+
+   it('should not return 400 if file size is not bigger than 5MB', async () => {
+      const invalidBuffer = Buffer.from(new ArrayBuffer(5 * 1024 * 1024));
+      const httpResponse = await sut.handle({ file: { buffer: invalidBuffer, mimeType } });
+
+      expect(httpResponse).not.toEqual({
+         statusCode: 400,
+         data: new MaxFileSizeError(5)
+      });
+   });
 });
