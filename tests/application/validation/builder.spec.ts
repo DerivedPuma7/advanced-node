@@ -64,8 +64,6 @@ describe('ValidationBuilder', () => {
             .image({ allowed: ['png'], maxSizeInMb: 5 })
             .build();
 
-         console.log(validators);
-
          expect(validators).toEqual([
             new AllowedMimeTypes(['png'], 'image/png')
          ]);
