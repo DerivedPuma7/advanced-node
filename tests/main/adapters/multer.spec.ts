@@ -70,4 +70,22 @@ describe('MulterAdapter', () => {
       expect(req.locals).toEqual({ anyLocals: 'any_locals' });
    });
 
+   it('should add file to req.locals', () => {
+      sut(req, res, next)
+
+      expect(req.locals).toEqual({
+         anyLocals: 'any_locals',
+         file: {
+            buffer: req.file?.buffer,
+            mimeType: req.file?.mimetype
+         }
+      });
+   });
+
+   it('should call next on success', () => {
+      sut(req, res, next);
+      
+      expect(next).toHaveBeenCalledWith();
+      expect(next).toHaveBeenCalledTimes(1);
+   });
 });
