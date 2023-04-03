@@ -7,4 +7,5 @@ import { Router } from "express";
 export default (router: Router): void  => {
    const controller = makeSavePictureController();
    router.delete('/users/picture', auth, adaptExpressRoute(controller));
+   router.put('/users/picture', auth, adaptExpressRoute(controller));
 }
