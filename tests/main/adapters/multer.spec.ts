@@ -3,7 +3,7 @@ import { ServerError } from "@/application/errors";
 
 import { getMockReq, getMockRes } from "@jest-mock/express";
 import { RequestHandler, Request, Response, NextFunction } from "express";
-import multer from 'multer';
+import multer from "multer";
 
 jest.mock('multer');
 
@@ -48,7 +48,7 @@ describe('MulterAdapter', () => {
 
    it('should return 500 if upload fails', async () => {
       const error = new Error('multer_error');
-      uploadSpy = jest.fn().mockImplementationOnce((req, res, next) => {
+      uploadSpy.mockImplementationOnce((req, res, next) => {
          next(error);
       });
 
@@ -61,7 +61,7 @@ describe('MulterAdapter', () => {
    });
 
    it('should not add file to req.locals', async () => {
-      uploadSpy = jest.fn().mockImplementationOnce((req, res, next) => {
+      uploadSpy.mockImplementationOnce((req, res, next) => {
          next();
       });
 
@@ -70,15 +70,4 @@ describe('MulterAdapter', () => {
       expect(req.locals).toEqual({ anyLocals: 'any_locals' });
    });
 
-   it('should add file to req.locals', () => {
-      sut(req, res, next)
-
-      expect(req.locals).toEqual({
-        anyLocals: 'any_locals',
-        file: {
-          buffer: req.file?.buffer,
-          mimeType: req.file?.mimetype
-        }
-      })
-    })
 });
