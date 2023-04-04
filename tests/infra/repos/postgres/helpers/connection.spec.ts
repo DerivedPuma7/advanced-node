@@ -29,11 +29,13 @@ describe('PgConnection', () => {
    let getConnectionManagerSpy: jest.Mock;
    let createQueryRunnerSpy: jest.Mock;
    let createConnectionSpy: jest.Mock;
+   let hasSpy: jest.Mock;
    let sut: PgConnection;
 
    beforeAll(() => {
+      hasSpy = jest.fn().mockReturnValue(true);
       getConnectionManagerSpy = jest.fn().mockReturnValue({
-         has: jest.fn().mockReturnValue(false)
+         has: hasSpy
       });
       jest.mocked(getConnectionManager).mockImplementation(getConnectionManagerSpy);
       createQueryRunnerSpy = jest.fn();
@@ -54,6 +56,8 @@ describe('PgConnection', () => {
    });
 
    it('should create a new connetion', async () => {
+      hasSpy.mockReturnValue(false);
+
       await sut.connect();
 
       expect(createConnectionSpy).toHaveBeenCalledWith();
