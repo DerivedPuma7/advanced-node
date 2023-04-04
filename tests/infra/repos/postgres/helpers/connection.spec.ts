@@ -64,24 +64,27 @@ describe('PgConnection', () => {
       expect(sut).toBe(sut2);
    });
 
-   it('should create a new connetion', async () => {
-      hasSpy.mockReturnValueOnce(false);
+   describe('Create connection', () => {
+      it('should create a new connetion', async () => {
+         hasSpy.mockReturnValueOnce(false);
 
-      await sut.connect();
+         await sut.connect();
 
-      expect(createConnectionSpy).toHaveBeenCalledWith();
-      expect(createConnectionSpy).toHaveBeenCalledTimes(1);
-      expect(createQueryRunnerSpy).toHaveBeenCalledWith();
-      expect(createQueryRunnerSpy).toHaveBeenCalledTimes(1);
+         expect(createConnectionSpy).toHaveBeenCalledWith();
+         expect(createConnectionSpy).toHaveBeenCalledTimes(1);
+         expect(createQueryRunnerSpy).toHaveBeenCalledWith();
+         expect(createQueryRunnerSpy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should use an existing connetion', async () => {
+         await sut.connect();
+
+         expect(createConnectionSpy).not.toHaveBeenCalledWith();
+         expect(getConnectionSpy).toHaveBeenCalledWith();
+         expect(getConnectionSpy).toHaveBeenCalledTimes(1);
+         expect(createQueryRunnerSpy).toHaveBeenCalledWith();
+         expect(createQueryRunnerSpy).toHaveBeenCalledTimes(1);
+      });
    });
 
-   it('should use an existing connetion', async () => {
-      await sut.connect();
-
-      expect(createConnectionSpy).not.toHaveBeenCalledWith();
-      expect(getConnectionSpy).toHaveBeenCalledWith();
-      expect(getConnectionSpy).toHaveBeenCalledTimes(1);
-      expect(createQueryRunnerSpy).toHaveBeenCalledWith();
-      expect(createQueryRunnerSpy).toHaveBeenCalledTimes(1);
-   });
 });
