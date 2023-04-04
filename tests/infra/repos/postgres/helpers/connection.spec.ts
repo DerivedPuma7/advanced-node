@@ -26,7 +26,7 @@ class PgConnection {
 }
 
 describe('PgConnection', () => {
-   it('it should have only one instance', async () => {
+   it('it should have only one instance', () => {
       const sut = PgConnection.getInstance();
       const sut2 = PgConnection.getInstance();
 
