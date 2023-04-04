@@ -19,7 +19,6 @@ export class PgConnection {
       const connection: Connection = getConnectionManager().has('default')
          ? getConnection()
          : await createConnection();
-
       this.query = connection.createQueryRunner();
    }
 
@@ -27,5 +26,10 @@ export class PgConnection {
       if(this.query === undefined) throw new ConnectionNotFoundError();
       await getConnection().close();
       this.query = undefined;
+   }
+
+   async openTransaction(): Promise<void> {
+      if(this.query === undefined) throw new ConnectionNotFoundError();
+      await this.query.startTransaction();
    }
 }
