@@ -1,6 +1,6 @@
 import { ChangeProfilePicture, setupChangeProfilePicture } from "@/domain/use-cases";
 import { makeAwsS3FileStorage, makeUuidHandler, makeUniqueId } from "@/main/factories/infra/gateways/";
-import { makePgUserProfileRepository } from "@/main/factories/infra/repos";
+import { makePgUserProfileRepository } from "@/main/factories/infra/repos/postgress";
 
 export const makeChangeProfilePicture = (): ChangeProfilePicture => {
    const fileStorage = makeAwsS3FileStorage();
